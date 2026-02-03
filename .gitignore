@@ -1,0 +1,32 @@
+# VS Code Extension Development
+out/
+dist/
+*.vsix
+
+# Dependencies
+node_modules/
+package-lock.json
+yarn.lock
+
+# Development
+.vscode-test.mjs
+.vscode/launch.json
+.vscode/settings.json
+*.log
+npm-debug.log*
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temporary files
+*.tmp
+.env.local
