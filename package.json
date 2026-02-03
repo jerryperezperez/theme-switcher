@@ -1,0 +1,90 @@
+{
+  "name": "theme-switcher",
+  "displayName": "Theme Switcher",
+  "description": "Automatically switch your VS Code color theme at regular intervals (hourly). Perfect for a colorful and refreshing coding environment throughout the day.",
+  "version": "0.0.1",
+  "publisher": "",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.108.1"
+  },
+  "categories": [
+    "Themes",
+    "Other"
+  ],
+  "keywords": [
+    "theme",
+    "color-theme",
+    "auto-switch",
+    "customization",
+    "productivity"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/theme-switcher"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/theme-switcher/issues"
+  },
+  "activationEvents": [
+    "onCommand:theme-switcher.switchNow",
+    "onStartupFinished"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "theme-switcher.switchNow",
+        "title": "Switch Theme Now"
+      },
+      {
+        "command": "theme-switcher.pause",
+        "title": "Pause Theme Switching"
+      },
+      {
+        "command": "theme-switcher.resume",
+        "title": "Resume Theme Switching"
+      }
+    ],
+    "configuration": {
+      "title": "Theme Switcher",
+      "properties": {
+        "themeSwitcher.switchIntervalHours": {
+          "type": "number",
+          "default": 1,
+          "minimum": 1,
+          "description": "Interval in hours between automatic theme switches. Minimum 1 hour."
+        },
+        "themeSwitcher.pollIntervalMinutes": {
+          "type": "number",
+          "default": 20,
+          "minimum": 1,
+          "description": "How often (in minutes) the extension polls to check if it's time to switch themes. A lower value checks earlier; 10–20 minutes is typical to reduce overhead."
+        },
+        "themeSwitcher.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable or disable automatic theme switching."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.108.1",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.52.0",
+    "eslint": "^9.39.2",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
