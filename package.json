@@ -3,7 +3,7 @@
   "displayName": "Theme Switcher",
   "description": "Automatically switch your VS Code color theme at regular intervals (hourly). Perfect for a colorful and refreshing coding environment throughout the day.",
   "version": "0.0.1",
-  "publisher": "",
+  "publisher": "jerryperezperez",
   "license": "MIT",
   "engines": {
     "vscode": "^1.108.1"
@@ -21,10 +21,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/yourusername/theme-switcher"
+    "url": "https://github.com/jerryperezperez/theme-switcher"
   },
   "bugs": {
-    "url": "https://github.com/yourusername/theme-switcher/issues"
+    "url": "https://github.com/jerryperezperez/theme-switcher/issues"
   },
   "activationEvents": [
     "onCommand:theme-switcher.switchNow",
