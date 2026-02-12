@@ -82,8 +82,8 @@ suite('Theme Switcher Extension Test Suite', () => {
 			// Disable theme switching
 			vscode.workspace.getConfiguration('themeSwitcher').update('enabled', false);
 
-			// Set timestamp to force a switch if it were enabled
-			context.globalState.update('lastSwitchTimestamp', Date.now() - 2 * 60 * 60 * 1000);
+			// Set timestamp to force a switch if it were enabled (60 minutes ago)
+			context.globalState.update('lastSwitchTimestamp', Date.now() - 60 * 60 * 1000);
 
 			// Should not throw
 			themeManager.checkAndSwitch();
@@ -104,8 +104,8 @@ suite('Theme Switcher Extension Test Suite', () => {
 		test('checkAndSwitch should respect paused state', () => {
 			themeManager.pause();
 
-			// Set timestamp to force a switch if not paused
-			context.globalState.update('lastSwitchTimestamp', Date.now() - 2 * 60 * 60 * 1000);
+			// Set timestamp to force a switch if not paused (60 minutes ago)
+			context.globalState.update('lastSwitchTimestamp', Date.now() - 60 * 60 * 1000);
 
 			// Should not throw
 			themeManager.checkAndSwitch();
@@ -125,13 +125,13 @@ suite('Theme Switcher Extension Test Suite', () => {
 			assert.ok(true, 'Should stop polling without error');
 		});
 
-		test('switchIntervalHours should have minimum of 1 hour', () => {
-			// Verify that the configuration enforces minimum 1 hour
-			vscode.workspace.getConfiguration('themeSwitcher').update('switchIntervalHours', 0);
+		test('switchIntervalMinutes should have minimum of 1 minute', () => {
+			// Verify that the configuration enforces minimum 1 minute
+			vscode.workspace.getConfiguration('themeSwitcher').update('switchIntervalMinutes', 0);
 
-			// checkAndSwitch should treat 0 as at least 1 hour
+			// checkAndSwitch should treat 0 as at least 1 minute
 			themeManager.checkAndSwitch();
-			assert.ok(true, 'Should enforce minimum 1 hour interval');
+			assert.ok(true, 'Should enforce minimum 1 minute interval');
 		});
 
 		test('pollIntervalMinutes should be configurable', () => {
@@ -145,29 +145,29 @@ suite('Theme Switcher Extension Test Suite', () => {
 		});
 	});
 
-	suite('Hour-based interval calculations', () => {
+	suite('Minute-based interval calculations', () => {
 		setup(() => {
 			themeManager = new ThemeManager(context);
 		});
 
-		test('should correctly calculate hours elapsed since last switch', () => {
-			// Set a timestamp 2 hours ago
-			const twoHoursAgo = Date.now() - (2 * 60 * 60 * 1000);
-			context.globalState.update('lastSwitchTimestamp', twoHoursAgo);
+		test('should correctly calculate minutes elapsed since last switch', () => {
+			// Set a timestamp 60 minutes ago
+			const sixtyMinutesAgo = Date.now() - (60 * 60 * 1000);
+			context.globalState.update('lastSwitchTimestamp', sixtyMinutesAgo);
 
-			// With a 1-hour interval, this should trigger a switch
-			vscode.workspace.getConfiguration('themeSwitcher').update('switchIntervalHours', 1);
+			// With a 30-minute interval, this should trigger a switch
+			vscode.workspace.getConfiguration('themeSwitcher').update('switchIntervalMinutes', 30);
 
 			// Should not throw
 			themeManager.checkAndSwitch();
-			assert.ok(true, 'Should calculate hours correctly');
+			assert.ok(true, 'Should calculate minutes correctly');
 		});
 
 		test('should handle no prior switch timestamp', () => {
 			// Clear the timestamp
 			(context.globalState as any).data = {};
 
-			vscode.workspace.getConfiguration('themeSwitcher').update('switchIntervalHours', 1);
+			vscode.workspace.getConfiguration('themeSwitcher').update('switchIntervalMinutes', 30);
 
 			// Should not throw
 			themeManager.checkAndSwitch();
@@ -194,4 +194,3 @@ class MockMemento implements vscode.Memento {
 		return Promise.resolve();
 	}
 }
-

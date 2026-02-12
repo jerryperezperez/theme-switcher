@@ -3,8 +3,8 @@ import * as vscode from "vscode";
 export class ThemeManager {
   private context: vscode.ExtensionContext;
   private intervalHandle: NodeJS.Timeout | undefined;
-  // Polling interval in milliseconds (set from config in start()): default 10 minutes
-  private pollIntervalMs: number = 10 * 60 * 1000;
+  // Polling interval in milliseconds (set from config in start()): default 5 minutes
+  private pollIntervalMs: number = 5 * 60 * 1000;
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
@@ -19,7 +19,8 @@ export class ThemeManager {
 
       if (packageJSON && packageJSON.contributes && packageJSON.contributes.themes) {
         for (const theme of packageJSON.contributes.themes) {
-          themes.push(theme.label || theme.id);
+          // console.log(`Found theme label: ${theme.label} with id ${theme.id}`);
+          themes.push(theme.id);
         }
       }
     }
@@ -67,16 +68,16 @@ export class ThemeManager {
 
   public checkAndSwitch(): void {
     const config = vscode.workspace.getConfiguration("themeSwitcher");
-    // Use hours-based configuration only. Enforce minimum 1 hour.
-    const switchIntervalHours = Math.max(1, config.get<number>("switchIntervalHours", 1));
+    // Use minutes-based configuration. Enforce minimum 1 minute.
+    const switchIntervalMinutes = Math.max(1, config.get<number>("switchIntervalMinutes", 30));
 
     const lastSwitchTime = this.context.globalState.get<number>("lastSwitchTimestamp", 0);
     const now = Date.now();
 
-    const hoursPassed = (now - lastSwitchTime) / (1000 * 60 * 60);
+    const minutesPassed = (now - lastSwitchTime) / (1000 * 60);
 
     console.log(
-      `Hours since last switch: ${hoursPassed.toFixed(2)} (threshold: ${switchIntervalHours} hour(s))`
+      `Minutes since last switch: ${minutesPassed.toFixed(2)} (threshold: ${switchIntervalMinutes} minute(s))`
     );
 
     const enabled = config.get<boolean>("enabled", true);
@@ -92,15 +93,15 @@ export class ThemeManager {
       return;
     }
 
-    if (hoursPassed >= switchIntervalHours) {
+    if (minutesPassed >= switchIntervalMinutes) {
       void this.switchToNextTheme();
     }
   }
 
   public start(): void {
-    // Read poll interval from config (minutes), default 20
+    // Read poll interval from config (minutes), default 5
     const config = vscode.workspace.getConfiguration("themeSwitcher");
-    const pollIntervalMinutes = config.get<number>("pollIntervalMinutes", 20);
+    const pollIntervalMinutes = config.get<number>("pollIntervalMinutes", 5);
     this.pollIntervalMs = Math.max(1, pollIntervalMinutes) * 60 * 1000;
 
     // Run immediately

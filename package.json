@@ -1,8 +1,8 @@
 {
   "name": "theme-switcher",
   "displayName": "Theme Switcher",
-  "description": "Automatically switch your VS Code color theme at regular intervals (hourly). Perfect for a colorful and refreshing coding environment throughout the day.",
-  "version": "0.0.1",
+  "description": "Automatically switch your VS Code color theme at regular intervals (every 30 minutes by default). Perfect for a colorful and refreshing coding environment throughout the day.",
+  "version": "0.0.2",
   "publisher": "jerryperezperez",
   "license": "MIT",
   "engines": {
@@ -49,17 +49,17 @@
     "configuration": {
       "title": "Theme Switcher",
       "properties": {
-        "themeSwitcher.switchIntervalHours": {
+        "themeSwitcher.switchIntervalMinutes": {
           "type": "number",
-          "default": 1,
+          "default": 30,
           "minimum": 1,
-          "description": "Interval in hours between automatic theme switches. Minimum 1 hour."
+          "description": "Interval in minutes between automatic theme switches. Minimum 1 minute."
         },
         "themeSwitcher.pollIntervalMinutes": {
           "type": "number",
-          "default": 20,
+          "default": 5,
           "minimum": 1,
-          "description": "How often (in minutes) the extension polls to check if it's time to switch themes. A lower value checks earlier; 10–20 minutes is typical to reduce overhead."
+          "description": "How often (in minutes) the extension polls to check if it's time to switch themes. A lower value checks more frequently; 5 minutes is typical to reduce overhead."
         },
         "themeSwitcher.enabled": {
           "type": "boolean",
